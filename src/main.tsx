@@ -5,6 +5,7 @@ import App from './App.tsx';
 import { AppRouter } from './routes/AppRouter.tsx';
 import { createTheme, ThemeProvider } from '@mui/material';
 import { AlertProvider } from './context/alert/Alert.provider.tsx';
+import { AuthProvider } from './context/auth/Auth.provider.tsx';
 
 const theme = createTheme({
   palette: {
@@ -23,10 +24,12 @@ const theme = createTheme({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
-      <AlertProvider>
-        <AppRouter />
-        <App />
-      </AlertProvider>
+      <AuthProvider>
+        <AlertProvider>
+          <AppRouter />
+          <App />
+        </AlertProvider>
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>,
 );

@@ -2,41 +2,54 @@ import { useActionState } from 'react';
 import { createInitialState, handleZodErros } from '../../helpers';
 import type { ActionState } from '../../interfaces';
 import { schemaUser, type UserFormValues } from '../../models';
-import { Container, Box, Paper, Typography, TextField, Button, CircularProgress } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useAlert } from '../../hooks';
+import {
+  Container,
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+} from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAlert, useAxios } from '../../hooks';
 
 export type UserActionState = ActionState<UserFormValues>;
 const initialState = createInitialState<UserFormValues>();
 
 export const UserPage = () => {
   const { showAlert } = useAlert();
+  const axios = useAxios();
+  const navigate = useNavigate();
 
   const createUserApi = async (
-      _: UserActionState | undefined,
-      formData: FormData,
-    ): Promise<UserActionState | undefined> => {
-      const rawData: UserFormValues = {
-        username: formData.get('username') as string,
-        password: formData.get('password') as string,
-        confirmPassword: formData.get('confirmPassword') as string,
-      };
-      try {
-        schemaUser.parse(rawData);
-        console.log(rawData);
-        showAlert('Usuario creado', 'success')
-      } catch (error) {
-        const err = handleZodErros<UserFormValues>(error, rawData);
-        console.log('error', err);
-        showAlert(err.message, 'error')
-        return err;
-      }
+    _: UserActionState | undefined,
+    formData: FormData,
+  ): Promise<UserActionState | undefined> => {
+    const rawData: UserFormValues = {
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+      confirmPassword: formData.get('confirmPassword') as string,
     };
+    try {
+      schemaUser.parse(rawData);
+      await axios.post('/users', {
+        username: rawData.username,
+        password: rawData.password,
+      });
+      showAlert('Usuario creado', 'success');
+      navigate('/login');
+    } catch (error) {
+      const err = handleZodErros<UserFormValues>(error, rawData);
+      showAlert(err.message, 'error');
+      return err;
+    }
+  };
 
-     const [state, submitAction, isPending] = useActionState(
-        createUserApi,
-        initialState,
-      );
+  const [state, submitAction, isPending] = useActionState(
+    createUserApi,
+    initialState,
+  );
 
   return (
     <Container

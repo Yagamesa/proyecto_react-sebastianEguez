@@ -11,15 +11,18 @@ import { useActionState } from 'react';
 import { schemaLogin, type LoginFormValues } from '../../models/login.model';
 import type { ActionState } from '../../interfaces';
 import { createInitialState, handleZodErros } from '../../helpers';
-import { Link } from 'react-router-dom';
-import { useAlert } from '../../hooks';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAlert, useAuth, useAxios } from '../../hooks';
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+//const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export type LoginActionState = ActionState<LoginFormValues>;
 const initialState = createInitialState<LoginFormValues>();
 export const LoginPage = () => {
   const { showAlert } = useAlert();
+  const { login } = useAuth();
+  const axios = useAxios();
+  const navigate = useNavigate();
 
   const loginApi = async (
     _: LoginActionState | undefined,
@@ -31,12 +34,16 @@ export const LoginPage = () => {
     };
     try {
       schemaLogin.parse(rawData);
-      await delay(5000);
-      console.log(rawData);
+      //await delay(5000);
+      const response = await axios.post('login', rawData);
+      if (!response?.data?.token) throw new Error('Token no existe');
+      login(response.data.token, { username: rawData.username });
+      showAlert('Bienvenido', 'success');
+      navigate('/perfil');
     } catch (error) {
       const err = handleZodErros<LoginFormValues>(error, rawData);
       console.log('error', err);
-      showAlert(err.message, 'error')
+      showAlert(err.message, 'error');
       return err;
     }
   };
