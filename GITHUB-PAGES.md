@@ -37,14 +37,21 @@
       "deploy": "gh-pages -d dist"
     }
     ```
+5. Ejecutar npm run build y luego deploy
     > build → genera la carpeta dist/
     > deploy → sube dist/ a la rama gh-page
 
-5. Configuración en GitHub:
-  1. Entrá a tu repositorio en GitHub.
-  2. Andá a Settings → Pages.
-  3. En Source:
-    1. Deploy from a branch
-    2. Branch: gh-pages
-    3. Carpeta: / (root)
-    4. Guardá los cambios.
+    ```bash
+    npm run build
+
+    npm run deploy
+    ```
+
+6. Configuración en GitHub:
+   1. Entrá a tu repositorio en GitHub.
+   2. Andá a Settings → Pages.
+   3. En Source:
+   4. Deploy from a branch
+   5. Branch: gh-pages
+   6. Carpeta: / (root)
+   7. Guardá los cambios.
