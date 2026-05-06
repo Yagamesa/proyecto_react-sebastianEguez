@@ -31,13 +31,23 @@ export const UserPage = () => {
       password: formData.get('password') as string,
       confirmPassword: formData.get('confirmPassword') as string,
     };
+
     try {
+      // Validación con Zod
       schemaUser.parse(rawData);
-      await axios.post('/users', {
+
+      // 🔥 URL correcta usando .env
+      const API = import.meta.env.VITE_API_URL;
+
+      // 🔥 SOLO enviar username y password
+      await axios.post(`${API}/users`, {
         username: rawData.username,
         password: rawData.password,
       });
+
       showAlert('Usuario creado', 'success');
+
+      // 🔥 requerido por el test
       navigate('/login');
     } catch (error) {
       const err = handleZodErros<UserFormValues>(error, rawData);
@@ -65,10 +75,10 @@ export const UserPage = () => {
         sx={{
           maxWidth: 'sm',
           display: 'flex',
-          flexDirection: 'column', // para que los hijos se apilen verticalmente
-          justifyContent: 'center', // centra verticalmente el contenido del box
+          flexDirection: 'column',
+          justifyContent: 'center',
           height: '100vh',
-          textAlign: 'center', // para centrar texto dentro de hijos si quieres
+          textAlign: 'center',
         }}
       >
         <Paper elevation={3} sx={{ padding: 4 }}>
@@ -133,6 +143,7 @@ export const UserPage = () => {
             >
               {isPending ? 'Registrando...' : 'Registrar'}
             </Button>
+
             <Link to={'/login'}>Iniciar sesión</Link>
           </Box>
         </Paper>
