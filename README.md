@@ -3,7 +3,12 @@
 Aplicación web desarrollada en React para la gestión de tareas (To-Do List), permitiendo crear, editar, eliminar y cambiar el estado de tareas.
 
 ---
+## 👨‍💻 Autor
 
+**Sebastian Eguez Mendoza**
+📱 77013637
+
+---
 ## 🚀 Funcionalidades
 
 * ✅ Crear tareas
@@ -43,9 +48,4 @@ http://localhost:5173
 
 ---
 
-## 👨‍💻 Autor
 
-**Sebastian Eguez Mendoza**
-📱 77013637
-
----
