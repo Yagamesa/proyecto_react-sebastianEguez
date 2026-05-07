@@ -2,12 +2,14 @@
   "name": "diplomado-react-proyecto",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://Yagamesa.github.io/proyecto_react-sebastianEguez",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
@@ -38,5 +40,6 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.58.2",
     "vite": "^8.0.9"
+    
   }
 }
